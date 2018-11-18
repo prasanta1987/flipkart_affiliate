@@ -146,7 +146,7 @@ function flipkartFetchData(data) {
                 <h5><b>${itemTitle}</b></h5>
                 <small>${itemdescription}</small>
                 <div class="input-group">
-                <input type="text" id="affUrl${i}" diasabled="diasabled" class="form-control" value="${productUrl}">
+                <input type="text" id="affUrl${i}" readonly class="form-control" value="${productUrl}">
                 <div class="input-group-append">
                     <button class="btn btn-primary" type="button" onclick="clipboard(${i})">Copy</button>
                 </div>
