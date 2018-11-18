@@ -1,16 +1,20 @@
+//Import Modules
 var flipkart = require("flipkart-affiliate-client-v1");
-var convert = require('xml-js');
 
+//DOM Element References
 const itemName = document.querySelector('#itemsearch')
 const searchBtn = document.querySelector('#searchbtn')
 const cardContainer = document.querySelector('#cardcontainer')
 
+//Set Up Flipkart Affiliate API
 var flipkartClient = new flipkart.CreateAffiliateClient({
     trackingId: "prasanta13",
     token: "37aab18a3e8e48da95f50ee7e1a6d951",
     format: "json"
 });
 
+
+//Search Event Listner
 searchBtn.addEventListener('click', () => {
     const query = itemName.value
 
@@ -25,9 +29,11 @@ searchBtn.addEventListener('click', () => {
         });
 })
 
+//Search Event Listner callback function
 function flipkartFetchData(data) {
     for (i = 0; i < data.products.length; i++) {
 
+        //Storing Variable for Products
         offers = data.products[i].productBaseInfoV1.offers
         itemTitle = data.products[i].productBaseInfoV1.title
         itemImage = data.products[i].productBaseInfoV1.imageUrls["400x400"]
@@ -37,7 +43,8 @@ function flipkartFetchData(data) {
         flSpecialPrice = data.products[i].productBaseInfoV1.flipkartSpecialPrice.amount
         currencyFormat = data.products[i].productBaseInfoV1.flipkartSpecialPrice.currency
         productUrl = data.products[i].productBaseInfoV1.productUrl
-        // cardContainer.innerHTML = ''
+
+        //Creating New DOM Elements
         let cardbody = document.createElement('div')
         cardbody.className = 'row border rounded'
         cardbody.style.padding = '10px'
