@@ -5,6 +5,7 @@ var flipkart = require("flipkart-affiliate-client-v1");
 const itemName = document.querySelector('#itemsearch')
 const searchBtn = document.querySelector('#searchbtn')
 const cardContainer = document.querySelector('#cardcontainer')
+const reportContainer = document.querySelector('#reports')
 
 //Set Up Flipkart Affiliate API
 var flipkartClient = new flipkart.CreateAffiliateClient({
@@ -13,15 +14,56 @@ var flipkartClient = new flipkart.CreateAffiliateClient({
     format: "json"
 });
 
-flipkartClient.doKeywordSearch('deal of the day', 10)
+let approvedOrders = {
+    startDate: '1900-03-01',
+    endDate: '2018-11-01',
+    status: 'approved',
+    offset: '0'
+}
+
+flipkartClient.getOrdersReport(approvedOrders)
     .then(function (value) {
-        cardContainer.innerHTML = ''
-        flData = JSON.parse(value.body)
-        flipkartFetchData(flData)
+        value = JSON.parse(value.body).orderList
+        fetchOrders(value)
     })
     .catch(function (err) {
         console.log(err);
     });
+
+function fetchOrders(data) {
+    data.forEach((doc) => {
+
+        approvedOderData(doc)
+
+    })
+}
+
+function approvedOderData(doc) {
+    console.log(doc)
+    soldItem = doc.title
+    soldItemCategory = doc.category
+    soldItemPrice = doc.sales.amount
+    commission = doc.tentativeCommission.amount
+
+    const div = document.createElement('div')
+    div.className = 'row'
+    div.innerHTML = `
+    <div class="col-sm-12 border rounded" id="approvedlist">
+    <h5>${soldItem}</h5>
+    </div>
+    `
+    reportContainer.appendChild(div)
+}
+
+// flipkartClient.doKeywordSearch('deal of the day', 10)
+//     .then(function (value) {
+//         cardContainer.innerHTML = ''
+//         flData = JSON.parse(value.body)
+//         flipkartFetchData(flData)
+//     })
+//     .catch(function (err) {
+//         console.log(err);
+//     });
 
 //Search Event Listner
 searchBtn.addEventListener('click', () => {
@@ -100,3 +142,4 @@ function clipboard(point) {
     copyText.select();
     document.execCommand("copy");
 }
+
