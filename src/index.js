@@ -13,7 +13,6 @@ var flipkartClient = new flipkart.CreateAffiliateClient({
     format: "json"
 });
 
-
 //Search Event Listner
 searchBtn.addEventListener('click', () => {
     const query = itemName.value

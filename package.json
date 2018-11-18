@@ -1,21 +1,19 @@
 {
   "name": "flipkart_product_secrch",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A Simple Application For Flipkart Affiliate API",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/prasanta1987/flipkart_affiliate",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Flipkart",
+    "Flipkart affiliate",
+    "Flipkart API"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "Prasanta Karmakar",
+  "license": "ISC",
   "devDependencies": {
     "electron": "^3.0.9"
   },
