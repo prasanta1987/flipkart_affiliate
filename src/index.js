@@ -13,6 +13,16 @@ var flipkartClient = new flipkart.CreateAffiliateClient({
     format: "json"
 });
 
+flipkartClient.doKeywordSearch('deal of the day', 10)
+    .then(function (value) {
+        cardContainer.innerHTML = ''
+        flData = JSON.parse(value.body)
+        flipkartFetchData(flData)
+    })
+    .catch(function (err) {
+        console.log(err);
+    });
+
 //Search Event Listner
 searchBtn.addEventListener('click', () => {
     const query = itemName.value
@@ -51,12 +61,17 @@ function flipkartFetchData(data) {
         cardbody.innerHTML = `
             <div class="col-sm-2 text-center">
                 <img class="img-fluid" src="${itemImage}" alt="Card image">
-                <hr>
-                <a class="btn btn-success" href="${productUrl}" target="_blank">Buy Now</a>
             </div>
             <div class="col-sm-10">
-                <h5><b>${itemTitle}</b></h5></br>
-                <small>${itemdescription}</small><hr>
+                <h5><b>${itemTitle}</b></h5>
+                <small>${itemdescription}</small>
+                <div class="input-group">
+                <input type="text" id="affUrl${i}" diasabled="diasabled" class="form-control" value="${productUrl}">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" onclick="clipboard(${i})">Copy</button>
+                </div>
+            </div>
+                <hr>
                 <div class="row" id="pricecontainer${i}">
                     <div class="col-sm">
                         <small>Maximum Retail Price: ${mrp} ${currencyFormat}</small></br>
@@ -78,4 +93,10 @@ function flipkartFetchData(data) {
         }
         priceContainer.appendChild(offerContainer)
     }
+}
+
+function clipboard(point) {
+    var copyText = document.getElementById("affUrl" + point);
+    copyText.select();
+    document.execCommand("copy");
 }
