@@ -87,6 +87,7 @@ function OderReports(doc, Selector) {
 //Search Event Listner
 searchBtn.addEventListener('click', () => {
     const query = itemName.value
+    document.getElementById('itemsection').scrollIntoView()
     filpkartSecarc(query)
 })
 
