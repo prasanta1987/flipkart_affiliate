@@ -17,6 +17,10 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "^2.0.0"
+    "electron": "^3.0.9"
+  },
+  "dependencies": {
+    "flipkart-affiliate-client-v1": "^1.0.4",
+    "xml-js": "^1.6.8"
   }
 }

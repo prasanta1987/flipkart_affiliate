@@ -1,44 +1,33 @@
-let request = require('request')
+var flipkart = require("flipkart-affiliate-client-v1");
+var convert = require('xml-js');
 
 const itemName = document.querySelector('#itemsearch')
 const searchBtn = document.querySelector('#searchbtn')
 const cardContainer = document.querySelector('#cardcontainer')
 
+var flipkartClient = new flipkart.CreateAffiliateClient({
+    trackingId: "prasanta13",
+    token: "37aab18a3e8e48da95f50ee7e1a6d951",
+    format: "json"
+});
 
 searchBtn.addEventListener('click', () => {
+    const query = itemName.value
 
-    const itemToSearch = itemName.value
-    var options = {
-        method: 'GET',
-        url: 'https://affiliate-api.flipkart.net/affiliate/1.0/search.json',
-        // qs: { query: itemToSearch, resultCount: '10' },
-        qs: { query: itemToSearch },
-        headers:
-        { 
-            'Postman-Token': '8c04b704-23a4-4cc7-af5e-fd7f0c46743f',
-            'cache-control': 'no-cache',
-            'Fk-Affiliate-Token': '37aab18a3e8e48da95f50ee7e1a6d951',
-            'Fk-Affiliate-Id': 'prasanta13'
-        }
-    };
-
-    request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-
-        const data = JSON.parse(body)
-        console.log(data)
-        cardContainer.innerHTML = ''
-
-        fetchData(data)
-    });
+    flipkartClient.doKeywordSearch(query, 10)
+        .then(function (value) {
+            cardContainer.innerHTML = ''
+            flData = JSON.parse(value.body)
+            flipkartFetchData(flData)
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
 })
 
-
-
-function fetchData(data) {
-    
+function flipkartFetchData(data) {
     for (i = 0; i < data.products.length; i++) {
-        
+
         offers = data.products[i].productBaseInfoV1.offers
         itemTitle = data.products[i].productBaseInfoV1.title
         itemImage = data.products[i].productBaseInfoV1.imageUrls["400x400"]
@@ -54,23 +43,23 @@ function fetchData(data) {
         cardbody.style.padding = '10px'
         cardbody.style.marginBottom = '10px'
         cardbody.innerHTML = `
-        <div class="col-sm-2 text-center">
-            <img class="img-fluid" src="${itemImage}" alt="Card image">
-            <hr>
-            <a class="btn btn-success" href="${productUrl}" target="_blank">Buy Now</a>
-        </div>
-        <div class="col-sm-10">
-            <h5><b>${itemTitle}</b></h5></br>
-            <small>${itemdescription}</small><hr>
-            <div class="row" id="pricecontainer${i}">
-                <div class="col-sm">
-                    <small>Maximum Retail Price: ${mrp} ${currencyFormat}</small></br>
-                    <small>Selling Price: ${flSellPrice} ${currencyFormat}</small></br>
-                    <small>Flipkart Special Price: ${flSpecialPrice} ${currencyFormat}</small>
+            <div class="col-sm-2 text-center">
+                <img class="img-fluid" src="${itemImage}" alt="Card image">
+                <hr>
+                <a class="btn btn-success" href="${productUrl}" target="_blank">Buy Now</a>
+            </div>
+            <div class="col-sm-10">
+                <h5><b>${itemTitle}</b></h5></br>
+                <small>${itemdescription}</small><hr>
+                <div class="row" id="pricecontainer${i}">
+                    <div class="col-sm">
+                        <small>Maximum Retail Price: ${mrp} ${currencyFormat}</small></br>
+                        <small>Selling Price: ${flSellPrice} ${currencyFormat}</small></br>
+                        <small>Flipkart Special Price: ${flSpecialPrice} ${currencyFormat}</small>
+                    </div>
                 </div>
             </div>
-        </div>
-        `
+            `
         cardContainer.appendChild(cardbody)
         const priceContainer = document.getElementById(`pricecontainer${i}`)
         const offerContainer = document.createElement('div')
@@ -78,7 +67,7 @@ function fetchData(data) {
         for (k = 0; k < offers.length; k++) {
             const offerItem = document.createElement('small')
             offerItem.style.display = 'block'
-            offerItem.innerHTML += `${k+1}: ${offers[k]}`
+            offerItem.innerHTML += `${k + 1}: ${offers[k]}`
             offerContainer.appendChild(offerItem)
         }
         priceContainer.appendChild(offerContainer)
