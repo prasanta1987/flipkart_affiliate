@@ -5,7 +5,9 @@ var flipkart = require("flipkart-affiliate-client-v1");
 const itemName = document.querySelector('#itemsearch')
 const searchBtn = document.querySelector('#searchbtn')
 const cardContainer = document.querySelector('#cardcontainer')
-const reportContainer = document.querySelector('#reports')
+const apprevoedReports = document.querySelector('#apprevedreports')
+const disApprevoedReports = document.querySelector('#disapprevedreports')
+
 
 //Set Up Flipkart Affiliate API
 var flipkartClient = new flipkart.CreateAffiliateClient({
@@ -14,56 +16,58 @@ var flipkartClient = new flipkart.CreateAffiliateClient({
     format: "json"
 });
 
-let approvedOrders = {
+let orders = {
     startDate: '1900-03-01',
     endDate: '2018-11-01',
-    status: 'approved',
     offset: '0'
 }
 
-flipkartClient.getOrdersReport(approvedOrders)
-    .then(function (value) {
-        value = JSON.parse(value.body).orderList
-        fetchOrders(value)
-    })
-    .catch(function (err) {
-        console.log(err);
-    });
+const approvedStatus = ['approved', 'disapproved'];
 
-function fetchOrders(data) {
-    data.forEach((doc) => {
+approvedStatus.forEach((Status) => {
+    orders.status = Status
+    flipkartClient.getOrdersReport(orders)
+        .then(function (value) {
+            value = JSON.parse(value.body).orderList
+            value.forEach((doc) => {
+                OderReports(doc, Status)
+            })
+        })
+        .catch(function (err) {
+            console.log(err);
+        });
+})
 
-        approvedOderData(doc)
-
-    })
-}
-
-function approvedOderData(doc) {
+function OderReports(doc, Selector) {
     console.log(doc)
     soldItem = doc.title
     soldItemCategory = doc.category
     soldItemPrice = doc.sales.amount
     commission = doc.tentativeCommission.amount
+    orderStatus = doc.status
 
     const div = document.createElement('div')
-    div.className = 'row'
+    div.className = 'col-sm-12'
+    div.id = 'approvedlist'
     div.innerHTML = `
-    <div class="col-sm-12 border rounded" id="approvedlist">
-    <h5>${soldItem}</h5>
-    </div>
+    <h6>${soldItem}</h6>
+    <ul id="approvedItemElement">
+        <li>Category: ${soldItemCategory}</li>
+        <li>Selling Price: ${soldItemPrice}</li>
+        <li>Commission: ${commission}</li>
+        <li>Order Status: ${orderStatus}</li>
+    </ul>
     `
-    reportContainer.appendChild(div)
+    if (Selector == 'approved') {
+        div.className = 'border rounded border-light bg-success text-light'
+        div.style.padding = '10px'
+        apprevoedReports.appendChild(div)
+    } else {
+        div.className = 'border rounded border-light bg-danger text-light'
+        div.style.padding = '10px'
+        disApprevoedReports.appendChild(div)
+    }
 }
-
-// flipkartClient.doKeywordSearch('deal of the day', 10)
-//     .then(function (value) {
-//         cardContainer.innerHTML = ''
-//         flData = JSON.parse(value.body)
-//         flipkartFetchData(flData)
-//     })
-//     .catch(function (err) {
-//         console.log(err);
-//     });
 
 //Search Event Listner
 searchBtn.addEventListener('click', () => {

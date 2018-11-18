@@ -1,8 +1,16 @@
+html body {
+  background-color: #02523e;
+}
+
 #cardcontainer {
   margin: 10px 0px 10px 0;
 }
 
 #approvedlist {
   margin: 10px 0px 10px 0px;
+}
+
+ul li {
+  list-style-type: none;
 }
 /*# sourceMappingURL=index.css.map */
