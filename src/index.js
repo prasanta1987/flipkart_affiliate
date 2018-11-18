@@ -85,11 +85,23 @@ function OderReports(doc, Selector) {
 }
 
 //Search Event Listner
+itemName.addEventListener('keyup', (e) => {
+    e.preventDefault()
+    if(e.keyCode === 13){
+        const query = itemName.value
+        document.getElementById('itemsection').scrollIntoView()
+        searchBtn.click()
+    }
+})
+
 searchBtn.addEventListener('click', () => {
     const query = itemName.value
     document.getElementById('itemsection').scrollIntoView()
     filpkartSecarc(query)
 })
+
+
+
 
 filpkartSecarc()
 
