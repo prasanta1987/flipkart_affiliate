@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Flipkart Product Search</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./bootstrap.min.css">
     <link rel="stylesheet" href="./index.css">
 
 </head>
@@ -15,15 +15,19 @@
 
     <div class="container-fluid">
         <br>
-        <span id="totalincome"></span>
-        <div class="row">
-            <div class="col-sm-6" id="apprevedreports"></div>
-            <div class="col-sm-6" id="disapprevedreports"></div>
-        </div>
+		<section class="hide" id="ordersummery">
+			<span id="totalincome"></span>
+			<div class="row">
+				<div class="col-sm-6" id="apprevedreports"></div>
+				<div class="col-sm-6" id="disapprevedreports"></div>
+			</div>
+		</section>
         <hr class="bg-danger" id="itemsection">
-        <div class="input-group sticky-top">
-            <input type="text" id="itemsearch" class="form-control" placeholder="Item To Search" aria-label="Recipient's username"
-                aria-describedby="basic-addon2">
+		<div class="jumbotron hide text-center" id="connectionerror">
+			<h2 class="text-danger">Please Check Your Internet Connection</h2>
+		</div>
+        <div class="input-group sticky-top hide" id="searchcontainer">
+            <input type="text" id="itemsearch" class="form-control" placeholder="Item To Search" aria-label="Recipient's username" aria-describedby="basic-addon2">
             <div class="input-group-append">
                 <button id="searchbtn" class="btn btn-warning" type="button">Secrch</button>
             </div>

@@ -8,8 +8,38 @@ const cardContainer = document.querySelector('#cardcontainer')
 const apprevoedReports = document.querySelector('#apprevedreports')
 const disApprevoedReports = document.querySelector('#disapprevedreports')
 const totalIncomeDom = document.querySelector('#totalincome')
+const orderSummery = document.querySelector('#ordersummery')
+const searchContainer = document.querySelector('#searchcontainer')
+const connectionError = document.querySelector('#connectionerror')
 
 let totalIncome = 0;
+let domVisible = false;
+
+function connectionTest(){
+	if(window.navigator.onLine){
+		searchContainer.classList.remove('hide')
+		connectionError.classList.add('hide')
+	} else {
+		searchContainer.classList.add('hide')
+		connectionError.classList.remove('hide')
+	}
+}
+
+setInterval(connectionTest, 1000)
+
+document.addEventListener('keyup', (event)=>{
+	event.preventDefault()
+	if(event.keyCode === 83 && event.shiftKey){
+		if(domVisible){
+			orderSummery.classList.add('hide')
+			domVisible = false
+		} else {
+			orderSummery.classList.remove('hide')
+			domVisible = true
+		}
+	}
+})
+
 
 //Set Up Flipkart Affiliate API
 var flipkartClient = new flipkart.CreateAffiliateClient({

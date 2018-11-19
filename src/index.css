@@ -13,4 +13,8 @@ html body {
 ul li {
   list-style-type: none;
 }
+
+.hide {
+	display : none;
+}
 /*# sourceMappingURL=index.css.map */
