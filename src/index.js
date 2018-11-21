@@ -15,29 +15,29 @@ const connectionError = document.querySelector('#connectionerror')
 let totalIncome = 0;
 let domVisible = false;
 
-function connectionTest(){
-	if(window.navigator.onLine){
-		searchContainer.classList.remove('hide')
-		connectionError.classList.add('hide')
-	} else {
-		searchContainer.classList.add('hide')
-		connectionError.classList.remove('hide')
-	}
+function connectionTest() {
+    if (window.navigator.onLine) {
+        searchContainer.classList.remove('hide')
+        connectionError.classList.add('hide')
+    } else {
+        searchContainer.classList.add('hide')
+        connectionError.classList.remove('hide')
+    }
 }
 
 setInterval(connectionTest, 1000)
 
-document.addEventListener('keyup', (event)=>{
-	event.preventDefault()
-	if(event.keyCode === 83 && event.shiftKey){
-		if(domVisible){
-			orderSummery.classList.add('hide')
-			domVisible = false
-		} else {
-			orderSummery.classList.remove('hide')
-			domVisible = true
-		}
-	}
+document.addEventListener('keyup', (event) => {
+    event.preventDefault()
+    if (event.keyCode === 83 && event.shiftKey) {
+        if (domVisible) {
+            orderSummery.classList.add('hide')
+            domVisible = false
+        } else {
+            orderSummery.classList.remove('hide')
+            domVisible = true
+        }
+    }
 })
 
 
@@ -50,7 +50,7 @@ var flipkartClient = new flipkart.CreateAffiliateClient({
 
 let orders = {
     startDate: '1900-03-01',
-    endDate: '2018-11-01',
+    endDate: '2099-11-01',
     offset: '0'
 }
 
@@ -63,7 +63,7 @@ approvedStatus.forEach((Status) => {
             value = JSON.parse(value.body).orderList
             value.forEach((doc) => {
                 OderReports(doc, Status)
-                if(Status == 'approved'){
+                if (Status == 'approved') {
                     totalIncome = totalIncome + doc.tentativeCommission.amount;
                 }
             })
@@ -74,7 +74,7 @@ approvedStatus.forEach((Status) => {
         });
 })
 
-function getTotalIncome(amount){
+function getTotalIncome(amount) {
     totalIncomeDom.innerHTML = `
     <div class="col-sm-12 bg-primary text-light rounded p-1">
     <h1 class="text-center">Total Income - ${amount}</h1>
@@ -117,7 +117,7 @@ function OderReports(doc, Selector) {
 //Search Event Listner
 itemName.addEventListener('keyup', (e) => {
     e.preventDefault()
-    if(e.keyCode === 13){
+    if (e.keyCode === 13) {
         const query = itemName.value
         document.getElementById('itemsection').scrollIntoView()
         searchBtn.click()
@@ -149,6 +149,7 @@ function filpkartSecarc(querry = '') {
 
 //Search Event Listner callback function
 function flipkartFetchData(data) {
+    console.log(data)
     for (i = 0; i < data.products.length; i++) {
 
         //Storing Variable for Products
@@ -156,6 +157,9 @@ function flipkartFetchData(data) {
         itemTitle = data.products[i].productBaseInfoV1.title
         itemImage = data.products[i].productBaseInfoV1.imageUrls["400x400"]
         itemdescription = data.products[i].productBaseInfoV1.productDescription
+        if (!itemdescription.length || itemdescription == 'NA') {
+            itemdescription = '<i>No Description Available on Flipkart</i>'
+        }
         mrp = data.products[i].productBaseInfoV1.maximumRetailPrice.amount
         flSellPrice = data.products[i].productBaseInfoV1.flipkartSellingPrice.amount
         flSpecialPrice = data.products[i].productBaseInfoV1.flipkartSpecialPrice.amount
