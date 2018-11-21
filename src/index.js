@@ -149,11 +149,10 @@ function filpkartSecarc(querry = '') {
 
 //Search Event Listner callback function
 function flipkartFetchData(data) {
-    console.log(data)
     for (i = 0; i < data.products.length; i++) {
 
         //Storing Variable for Products
-        offers = data.products[i].productBaseInfoV1.offers
+        specs = data.products[i].categorySpecificInfoV1.detailedSpecs
         itemTitle = data.products[i].productBaseInfoV1.title
         itemImage = data.products[i].productBaseInfoV1.imageUrls["400x400"]
         itemdescription = data.products[i].productBaseInfoV1.productDescription
@@ -165,6 +164,7 @@ function flipkartFetchData(data) {
         flSpecialPrice = data.products[i].productBaseInfoV1.flipkartSpecialPrice.amount
         currencyFormat = data.products[i].productBaseInfoV1.flipkartSpecialPrice.currency
         productUrl = data.products[i].productBaseInfoV1.productUrl
+        discount = (((mrp - flSpecialPrice) / mrp) * 100).toFixed(0)
 
         //Creating New DOM Elements
         let cardbody = document.createElement('div')
@@ -186,27 +186,28 @@ function flipkartFetchData(data) {
                 </div>
             </div>
                 <hr>
-                <div class="row" id="pricecontainer${i}">
+                <div class="row" id="specscontainer${i}">
                     <div class="col-sm">
                         <small>Maximum Retail Price : <b>${mrp} ${currencyFormat}</b></small></br>
                         <small>Selling Price : <b>${flSellPrice} ${currencyFormat}</b></small></br>
-                        <small>Flipkart Special Price : <b>${flSpecialPrice} ${currencyFormat}</b></small>
+                        <small>Flipkart Special Price : <b>${flSpecialPrice} ${currencyFormat}</b></small><br>
+                        <small>Discount : <b>${discount}%</b></small>
                     </div>
                 </div>
             </div>
             </div>
             `
         cardContainer.appendChild(cardbody)
-        const priceContainer = document.getElementById(`pricecontainer${i}`)
-        const offerContainer = document.createElement('div')
-        offerContainer.className = 'col-sm'
-        for (k = 0; k < offers.length; k++) {
-            const offerItem = document.createElement('small')
-            offerItem.style.display = 'block'
-            offerItem.innerHTML += `${k + 1}: ${offers[k]}`
-            offerContainer.appendChild(offerItem)
+        const specsContainer = document.getElementById(`specscontainer${i}`)
+        const specsBody = document.createElement('div')
+        specsBody.className = 'col-sm'
+        for (k = 0; k < specs.length; k++) {
+            const specsItem = document.createElement('small')
+            specsItem.style.display = 'block'
+            specsItem.innerHTML += `${k + 1}: ${specs[k]}`
+            specsBody.appendChild(specsItem)
         }
-        priceContainer.appendChild(offerContainer)
+        specsContainer.appendChild(specsBody)
     }
 }
 
