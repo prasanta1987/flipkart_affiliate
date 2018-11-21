@@ -11,6 +11,7 @@ const totalIncomeDom = document.querySelector('#totalincome')
 const orderSummery = document.querySelector('#ordersummery')
 const searchContainer = document.querySelector('#searchcontainer')
 const connectionError = document.querySelector('#connectionerror')
+const imageSrc = document.querySelector('#dispimg');
 
 let totalIncome = 0;
 let domVisible = false;
@@ -157,7 +158,7 @@ function flipkartFetchData(data) {
         itemImage = data.products[i].productBaseInfoV1.imageUrls["400x400"]
         itemdescription = data.products[i].productBaseInfoV1.productDescription
         if (!itemdescription.length || itemdescription == 'NA') {
-            itemdescription = '<i>No Description Available on Flipkart</i>'
+            itemdescription = '<i>No Description Provided</i>'
         }
         mrp = data.products[i].productBaseInfoV1.maximumRetailPrice.amount
         flSellPrice = data.products[i].productBaseInfoV1.flipkartSellingPrice.amount
@@ -169,12 +170,12 @@ function flipkartFetchData(data) {
         //Creating New DOM Elements
         let cardbody = document.createElement('div')
         cardbody.className = 'col-sm-12 border rounded bg-light'
-        cardbody.style.padding = '10px'
+        // cardbody.style.padding = '10px 0px 10px 0px'
         cardbody.style.marginBottom = '10px'
         cardbody.innerHTML = `
-            <div class="row">
+            <div class="row p-1">
             <div class="col-sm-2 text-center">
-                <img class="img-fluid rounded" src="${itemImage}" alt="Card image">
+                <img class="img-fluid rounded" onclick=dispImg("${itemImage}") src="${itemImage}" alt="Card image">
             </div>
             <div class="col-sm-10">
                 <h5><b>${itemTitle}</b></h5>
@@ -187,7 +188,7 @@ function flipkartFetchData(data) {
             </div>
                 <hr>
                 <div class="row" id="specscontainer${i}">
-                    <div class="col-sm">
+                    <div class="col-sm border rounded">
                         <small>Maximum Retail Price : <b>${mrp} ${currencyFormat}</b></small></br>
                         <small>Selling Price : <b>${flSellPrice} ${currencyFormat}</b></small></br>
                         <small>Flipkart Special Price : <b>${flSpecialPrice} ${currencyFormat}</b></small><br>
@@ -200,7 +201,7 @@ function flipkartFetchData(data) {
         cardContainer.appendChild(cardbody)
         const specsContainer = document.getElementById(`specscontainer${i}`)
         const specsBody = document.createElement('div')
-        specsBody.className = 'col-sm'
+        specsBody.className = 'col-sm border rounded'
         for (k = 0; k < specs.length; k++) {
             const specsItem = document.createElement('small')
             specsItem.style.display = 'block'
@@ -211,9 +212,17 @@ function flipkartFetchData(data) {
     }
 }
 
+function dispImg(imgSrc) {
+    imageSrc.src = imgSrc
+    document.querySelector('#imgcontainer').classList.remove('hide')
+}
+
 function clipboard(point) {
     var copyText = document.getElementById("affUrl" + point);
     copyText.select();
     document.execCommand("copy");
 }
 
+document.getElementById('closeimg').addEventListener('click', () => {
+    document.querySelector('#imgcontainer').classList.add('hide')
+})
