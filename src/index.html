@@ -32,8 +32,20 @@
                 <div class="col-sm-6" id="apprevedreports"></div>
                 <div class="col-sm-6" id="disapprevedreports"></div>
             </div>
+            <hr class="bg-danger">
         </section>
-        <hr class="bg-danger" id="itemsection">
+
+        <section>
+            <div class="input-group hide" id="credcontainer">
+                <input type="text" id="affid" class="form-control" placeholder="Your Affiliate ID" aria-describedby="basic-addon2">
+                <input type="text" id="apikey" class="form-control" placeholder="Your API Key" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button id="credsave" class="btn btn-success" type="button">SAVE</button>
+                </div>
+            </div>
+            <hr class="bg-danger" id="itemsection">
+        </section>
+
         <div class="jumbotron hide text-center" id="connectionerror">
             <h2 class="text-danger">Please Check Your Internet Connection</h2>
         </div>

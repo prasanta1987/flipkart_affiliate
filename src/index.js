@@ -1,5 +1,6 @@
 //Import Modules
-var flipkart = require("flipkart-affiliate-client-v1");
+let flipkart = require("flipkart-affiliate-client-v1");
+let fs = require('fs')
 
 //DOM Element References
 const itemName = document.querySelector('#itemsearch')
@@ -9,20 +10,42 @@ const apprevoedReports = document.querySelector('#apprevedreports')
 const disApprevoedReports = document.querySelector('#disapprevedreports')
 const totalIncomeDom = document.querySelector('#totalincome')
 const orderSummery = document.querySelector('#ordersummery')
+const credContainer = document.querySelector('#credcontainer')
 const searchContainer = document.querySelector('#searchcontainer')
 const connectionError = document.querySelector('#connectionerror')
 const imageSrc = document.querySelector('#dispimg');
+const credSave = document.querySelector('#credsave');
+const affId = document.querySelector('#affid');
+const apiKey = document.querySelector('#apikey');
+
+let credential = {}
+if (!fs.existsSync('./src/cred.json')) {
+    fs.writeFileSync('./src/cred.json', '{"trackingId": "","token": "","format": "json"}')
+}
+// fs.writeFileSync('./src/cred1.json', 'Nothing Here..!')
+credSave.addEventListener('click', () => {
+    credential['trackingId'] = affId.value
+    credential['token'] = apiKey.value
+    credential['format'] = 'json'
+
+    fs.writeFile('./src/cred.json', JSON.stringify(credential, null, 2), () => {
+        location.reload()
+    })
+})
+
+
 
 let totalIncome = 0;
-let domVisible = false;
+let orderVisiable = false;
+let credVisiable = false;
 
 function connectionTest() {
     if (window.navigator.onLine) {
-        searchContainer.classList.remove('hide')
         connectionError.classList.add('hide')
+        searchContainer.classList.remove('hide')
     } else {
-        searchContainer.classList.add('hide')
         connectionError.classList.remove('hide')
+        searchContainer.classList.add('hide')
     }
 }
 
@@ -31,23 +54,35 @@ setInterval(connectionTest, 1000)
 document.addEventListener('keyup', (event) => {
     event.preventDefault()
     if (event.keyCode === 83 && event.shiftKey) {
-        if (domVisible) {
+        if (orderVisiable) {
             orderSummery.classList.add('hide')
-            domVisible = false
+            orderVisiable = false
         } else {
+            orderVisiable = true
             orderSummery.classList.remove('hide')
-            domVisible = true
         }
     }
 })
 
+document.addEventListener('keyup', (event) => {
+    event.preventDefault()
+    if (event.keyCode === 67 && event.shiftKey) {
+        if (credVisiable) {
+            credContainer.classList.add('hide')
+            credVisiable = false
+        } else {
+            orderSummery.classList.add('hide')
+            credContainer.classList.remove('hide')
+            credVisiable = true
+            orderVisiable = false
+        }
+    }
+})
+
+let flCred = JSON.parse(fs.readFileSync('./src/cred.json'))
 
 //Set Up Flipkart Affiliate API
-var flipkartClient = new flipkart.CreateAffiliateClient({
-    trackingId: "prasanta13",
-    token: "37aab18a3e8e48da95f50ee7e1a6d951",
-    format: "json"
-});
+var flipkartClient = new flipkart.CreateAffiliateClient(flCred);
 
 let orders = {
     startDate: '1900-03-01',
@@ -61,6 +96,11 @@ approvedStatus.forEach((Status) => {
     orders.status = Status
     flipkartClient.getOrdersReport(orders)
         .then(function (value) {
+            ifError = value.error
+            if (ifError == 'Unauthorized. Affiliate Id or Token InCorrect') {
+                credContainer.classList.remove('hide')
+            }
+
             value = JSON.parse(value.body).orderList
             value.forEach((doc) => {
                 OderReports(doc, Status)
@@ -71,7 +111,7 @@ approvedStatus.forEach((Status) => {
             getTotalIncome(totalIncome)
         })
         .catch(function (err) {
-            console.log(err);
+            // console.log(err);
         });
 })
 
@@ -144,7 +184,7 @@ function filpkartSecarc(querry = '') {
             flipkartFetchData(flData)
         })
         .catch(function (err) {
-            console.log(err);
+            // console.log(err);
         });
 }
 
