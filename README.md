@@ -1,6 +1,6 @@
 <h1><i>Flipkart Product Search and Affiliated Order Summery</i></h1>
 
-<h4>To Run the project</h4>
+<h4>Getting Strated Guide</h4>
 <ul>
 <li>Clone or Dwonload the project into your hard drive</li>
   <li>Extract File, if downloaded</li>
