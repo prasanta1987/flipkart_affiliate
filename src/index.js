@@ -19,8 +19,8 @@ const affId = document.querySelector('#affid');
 const apiKey = document.querySelector('#apikey');
 
 let credential = {}
-if (!fs.existsSync('./src/cred.json')) {
-    fs.writeFileSync('./src/cred.json', '{"trackingId": "","token": "","format": "json"}')
+if (!fs.existsSync('./cred.json')) {
+    fs.writeFileSync('./cred.json', '{"trackingId": "","token": "","format": "json"}')
 }
 // fs.writeFileSync('./src/cred1.json', 'Nothing Here..!')
 credSave.addEventListener('click', () => {
@@ -28,7 +28,7 @@ credSave.addEventListener('click', () => {
     credential['token'] = apiKey.value
     credential['format'] = 'json'
 
-    fs.writeFile('./src/cred.json', JSON.stringify(credential, null, 2), () => {
+    fs.writeFile('./cred.json', JSON.stringify(credential, null, 2), () => {
         location.reload()
     })
 })
@@ -79,7 +79,7 @@ document.addEventListener('keyup', (event) => {
     }
 })
 
-let flCred = JSON.parse(fs.readFileSync('./src/cred.json'))
+let flCred = JSON.parse(fs.readFileSync('./cred.json'))
 
 //Set Up Flipkart Affiliate API
 var flipkartClient = new flipkart.CreateAffiliateClient(flCred);
