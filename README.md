@@ -2,10 +2,15 @@
 
 <h4>To Run the project</h4>
 <ul>
-<li>Clone the project into your hard drive</li>
+<li>Clone or Dwonload the project into your hard drive</li>
+  <li>Extract File, if downloaded</li>
+  <li>Go inside Project Folder</li>
 <li>npm install</li>
 <li>npm start</li>
-<li>Enter your Flipkart Affiliate ID and API key</li>
+<li>Enter your Flipkart Affiliate ID and API key and Click "Save" Button</li>
+  <li>Search for the Item you Want to Affiliate</li>
+  <li>After Appearing your Desired Items, Click on "Copy" Button to Copy the Affiliated Link</li>
+  <li>Share Affiliated Link Where you Want to</li>
 </ul>
 
 <h5>SOME SHORT CUT KEYS:</h5>
