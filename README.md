@@ -1,7 +1,5 @@
-# flipkart_affiliate
+<h1><i>Flipkart Product Search and Affiliated Order Summery</i></h1>
 
-<h1><i>flipkart affiliate api call</i></h1>
-<hr>
 <h4>To Run the project</h4>
 <ul>
 <li>Clone the project into your hard drive</li>
